@@ -1,0 +1,46 @@
+code {
+	color:Chocolate;
+}
+#mediumturquoise-right {
+	color:mediumturquoise;
+}
+#orangered {
+	color:orangered;
+}
+#maroon {
+	color:maroon;
+}
+#right{
+	position:relative;
+	left:10px
+}
+#h3-right {
+	color:coral;
+	position:relative;
+	left:40px
+}
+#codegreen {
+	color:DarkOliveGreen;
+	font-size:16px;
+}
+#gray {
+	color:DarkSlateGray;
+	line-height:20px;
+}
+#red {
+	color:red;
+	text-decoration:underline;
+}
+#background {
+	filter:alpha(opacity=50);  
+	-moz-opacity:0.5;  
+	-khtml-opacity: 0.5;  
+	opacity: 0.5;
+	height:100%;
+	width:100%;
+	position:absolute;
+	background="../images/beijing1.gif"; 
+}
+#jin {
+	line-height:13px;
+}

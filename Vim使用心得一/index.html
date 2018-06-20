@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Vim使用心得一 | JokerHome</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="补考终于结束了，终于可以干其他的事了！本篇为Vim的安装与配置，了解过的人可以略过本篇了。">
+<meta name="keywords" content="Vim，Linux，代码&#x2F;文本编辑器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vim使用心得一">
+<meta property="og:url" content="http://www.jokernew.top/Vim使用心得一/index.html">
+<meta property="og:site_name" content="JokerHome">
+<meta property="og:description" content="补考终于结束了，终于可以干其他的事了！本篇为Vim的安装与配置，了解过的人可以略过本篇了。">
+<meta property="og:locale" content="English&Chinese">
+<meta property="og:image" content="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fsgmnhrw5qj30d708i0tm">
+<meta property="og:image" content="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fsgmnhvdrrj30bx085t8w">
+<meta property="og:image" content="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fshod68ljdj30i90c1jrb">
+<meta property="og:image" content="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fshod78qkwj30i40c1a9z">
+<meta property="og:image" content="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fshod78qkwj30i40c1a9z">
+<meta property="og:image" content="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fshod7fmdnj30i30bvjrb">
+<meta property="og:image" content="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fshod7j33hj30i30bv747">
+<meta property="og:image" content="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fshod7nqr6j30i30bva9z">
+<meta property="og:image" content="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_02.png">
+<meta property="og:updated_time" content="2018-06-20T08:11:56.996Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vim使用心得一">
+<meta name="twitter:description" content="补考终于结束了，终于可以干其他的事了！本篇为Vim的安装与配置，了解过的人可以略过本篇了。">
+<meta name="twitter:image" content="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fsgmnhrw5qj30d708i0tm">
+  
+    <link rel="alternate" href="/atom.xml" title="JokerHome" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">JokerHome</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Journey of Discovery</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.jokernew.top"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Vim使用心得一" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Vim使用心得一/" class="article-date">
+  <time datetime="2018-04-27T03:36:22.000Z" itemprop="datePublished">2018-04-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Vim使用心得一
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>补考终于结束了，终于可以干其他的事了！本篇为Vim的安装与配置，了解过的人可以略过本篇了。<br><a id="more"></a></p>
+<p>挑选一款适合自己的代码编辑器对于写代码的人来说无疑非常重要。众多编辑器中，我唯独钟爱Vim。不仅仅因为它功能众多，还因为它的自由。</p>
+<p>在日常使用Vim中，不可避免的遇到了一些问题，所以这系列博客一方面是为了记下这些问题的解决方法，避免再跳坑以及重复去搜索Ctrl^C,Ctrl^v之类的文章；另一方面是为了记下一些vim的操作以及探索，方便日后查询使用。</p>
+<link rel="stylesheet" href="../css/MyBlog_Vim.css" type="text/css">
+
+<h2>一、Vim简介</h2>
+
+<p id="gray">Vim是从vi发展出来的，类似于vi的著名的功能强大、高度可定制的文本编辑器。它的代码补全、编译，查找，跳转等编程功能非常丰富，尤其还<font id="red">支持正则表达式</font>，还有自己的脚本语言Vimscript。</p>
+
+<h2>二、Vim安装</h2><br><h3>（1）Windows下</h3><br><br><a href="https://www.vim.org/download.php" target="_blank" rel="noopener">Vim下载地址</a><br><p>找到对应windows版本，下载好了之后运行安装程序.</p><br><p style="text-align:center" contenteditable="true"><img src="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fsgmnhrw5qj30d708i0tm" alt="vim安装选项，图片未显示，请略过"><br>根据自己的喜好选择选项</p><br><br><p style="text-align:center" contenteditable="true"><img src="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fsgmnhvdrrj30bx085t8w" alt="vim安装位置，图片未显示，请略过"><br>根据自己情况选择安装位置</p><br><br><br><h3>（2）Linux下</h3><br><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># apt-get update </span><br><span class="line"># apt-get upgrade  //先更新</span><br><span class="line"># apt-get install vim //或 yum install vim,根据自己的系统选择</span><br><span class="line"># vim -v //测试安装成功否</span><br></pre></td></tr></table></figure><br><br><h2>三、vim使用简介</h2>
+
+<p id="jin"><br>启动vim:<br><br><code>vim temp.txt</code><br><br><!--插入图片--><br><img src="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fshod68ljdj30i90c1jrb" alt="vim打开界面"><br><br>vim分为三种模式，命令模式(Command Mode)，编辑模式(Input Mode)，末行模式(Last Line Mode)。<br><br><br><br>命令模式：刚打开文件时进入的模式，如上图所示。在此模式下不能进行输入，可以移动光标和键入命令。<br><br>.|.<br><br>(按[i|o|]进入)<br><br>\|/<br><br>编辑模式：在此模式下可以输入字符，可以使用方向键进行光标移动。<br><br>.|.<br><br>(按[Esc]退回)<br><br>\|/<br><br>命令模式<br><br><br><br>命令模式<br><br>.|.<br><br>(按[:]进入)<br><br>\|/<br><br>末行模式:可以在命令栏的冒号提示符后输入命令执行。<br><br>.|.<br><br>(命令执行完后或按退格键删除冒号后自动进入)<br><br>\|/<br><br>命令模式<br><br><br><br>退出：末行状态下输入[wq|wq!|q|q!]。<br><br><img src="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fshod78qkwj30i40c1a9z" alt="编辑模式"><br><br>按[i]后的编辑模式，接着输入任意文本或代码。<br><br><img src="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fshod78qkwj30i40c1a9z" alt="输入文本"><br><br>从编辑模式按[Esc]退出到命令模式:<br><br><img src="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fshod7fmdnj30i30bvjrb" alt="退出到命令模式"><br><br>从命令模式按[:]到末行模式：<br><br><img src="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fshod7j33hj30i30bv747" alt="末行模式"><br><br>从末行模式键入命令[wq]保存并退出：<br><br><img src="https://ww3.sinaimg.cn/bmiddle/006BHt7jly1fshod7nqr6j30i30bva9z" alt="退出并保存"><br><br></p>
+
+<p></p><h2>四、Vim配置</h2><p></p>
+<h3>（1）配置文件位置</h3>
+
+<p id="gray">Vim的配置文件主要会用到两个，一个是系统级配置文件，一个用户级配置文件，系统级配置文件通常在Vim的安装目录下，用户级配置文件在用户主目录下。可以在普通模式使用<code>echo $VIM</code>找出系统级配置文件路径，用<code>echo $HOME</code>找出用户级配置文件路径。<br><br>默认路径时，使用<code>echo $VIM</code>命令后结果:<br><br>Linux:<code>/usr/share/vim/vimrc</code><br><br>Windows<code>C:\Program Files (x86)\vim_vimrc</code><br><br>使用<code>echo $HOME</code>命令后结果：<br><br>Linux:<code>/root/.vimrc</code><br><br>Windows:<code>C:\Users\Administrator_vimrc</code><br><br>至于gvimrc是为图形界面Gvim设置的配置文件，和vimrc相似，并且目录相同。<br></p>
+
+<p></p><h3>（2）配置文件内容(以linux下为主，windows下相同)</h3><br>这里给出常用配置，特殊配置自行搜索。在配置文件中，单个半角双引号[“]为行注释。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&quot;set shortmess=atI &quot;启动时不显示援助乌干达儿童提示</span><br><span class="line">&quot;set nu &quot;显示行号（这个设置特别有用，每次在新环境配置都需要把这个配置打开）</span><br><span class="line">&quot;syntax on &quot;语法高亮（vim配有几套颜色主题，可以根据自己喜好更换不同主题，或自己制作主题）</span><br><span class="line">&quot;set hls &quot;设置搜索高亮（这个搜索时高亮很有用，还有逐字符高亮。）</span><br><span class="line">&quot;colorscheme murphy &quot;设置配色方案，murphy可更换不同方案。在普通模式下输入:colorscheme按[Tab]键就可以查看可以使用哪些配色方案了，左右方向键可以更换不同主题然后回车进行预览，合适后需要更改这里的配置为喜爱的主题名就可以了</span><br><span class="line"></span><br><span class="line">&quot;filetype on &quot;检测文件类型</span><br><span class="line">&quot;set showmatch &quot;设置代码匹配，包括括号匹配情况</span><br><span class="line">&quot;filetype indent on &quot;针对不同的文件，采用不同的缩进方式（在我实际使用中，并没有体现出其作用...)</span><br><span class="line"></span><br><span class="line">&quot;set autoread &quot;文件修改后自动读入</span><br><span class="line">&quot;set nobackup  &quot;取消备份</span><br><span class="line">&quot;set noswapfile &quot;取消临时文件生成（在写重要文件时，强烈建议打开这两条，以防一不小心操作失误，一切灰飞烟灭～）</span><br><span class="line"></span><br><span class="line">&quot;set mouse=a &quot;允许使用鼠标点击定位</span><br><span class="line"></span><br><span class="line">&quot;set tabstop=4 &quot;设置tab宽度（对于tab有要求的可以设置，在windows上作用很大）</span><br><span class="line">&quot;set shiftwidth=4 &quot;设置自动对齐空格数</span><br><span class="line">&quot;set softabstop=4 &quot;退格键可以一次删除4个空格</span><br><span class="line"></span><br><span class="line">&quot;set encoding=utf-8 &quot;设置编码方式</span><br><span class="line">&quot;set fileencoding=utf-8,ucs-bom,cp936,gb18030,big5,euc-jp,euc-kr,latin1 &quot;设置打开i文件的编码格式,ucs-bom,cp936,gb18030,big5在windwos上很好用，可以提前</span><br></pre></td></tr></table></figure><p></p>
+<p></p><h2>联系方式:</h2><br><a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=5oKHg4uJiMiKiZCDpoCJnouHj4rIhYmL" style="text-decoration:none;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_02.png"></a><p></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.jokernew.top/Vim使用心得一/" data-id="cjimu6x1m0000agd5bpdkxg30" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vim，Linux，代码-文本编辑器/">Vim，Linux，代码/文本编辑器</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/Vim使用心得二之常用命令/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Vim使用心得二之常用命令
+        
+      </div>
+    </a>
+  
+  
+    <a href="/孤独之旅/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">孤独之旅</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim-Linux-代码-文本编辑器-正则表达式/">Vim, Linux, 代码/文本编辑器, 正则表达式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim，Linux，代码-文本编辑器/">Vim，Linux，代码/文本编辑器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows，汇编，Win32/">Windows，汇编，Win32</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/心灵，孤独，治愈，随感/">心灵，孤独，治愈，随感</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Vim-Linux-代码-文本编辑器-正则表达式/" style="font-size: 10px;">Vim, Linux, 代码/文本编辑器, 正则表达式</a> <a href="/tags/Vim，Linux，代码-文本编辑器/" style="font-size: 20px;">Vim，Linux，代码/文本编辑器</a> <a href="/tags/Windows，汇编，Win32/" style="font-size: 10px;">Windows，汇编，Win32</a> <a href="/tags/心灵，孤独，治愈，随感/" style="font-size: 10px;">心灵，孤独，治愈，随感</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/Vim使用心得三/">Vim使用心得三</a>
+          </li>
+        
+          <li>
+            <a href="/Vim使用心得二之常用命令/">Vim使用心得二之常用命令</a>
+          </li>
+        
+          <li>
+            <a href="/Vim使用心得一/">Vim使用心得一</a>
+          </li>
+        
+          <li>
+            <a href="/孤独之旅/">孤独之旅</a>
+          </li>
+        
+          <li>
+            <a href="/Win32汇编之Windows下窗口程序/">Win32汇编之Windows下窗口程序</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 DW*Joker<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+		<div class="powered-by">
+		<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+		  本站访客数:<span id="busuanzi_value_site_uv"></span>
+		</span>
+		</div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

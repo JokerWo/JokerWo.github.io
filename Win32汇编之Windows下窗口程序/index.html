@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Win32汇编之Windows下窗口程序 | JokerHome</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最近在学Win32汇编，故写此以作学习笔记，待日后复习查看使用。">
+<meta name="keywords" content="Windows，汇编，Win32">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Win32汇编之Windows下窗口程序">
+<meta property="og:url" content="http://www.jokernew.top/Win32汇编之Windows下窗口程序/index.html">
+<meta property="og:site_name" content="JokerHome">
+<meta property="og:description" content="最近在学Win32汇编，故写此以作学习笔记，待日后复习查看使用。">
+<meta property="og:locale" content="English&Chinese">
+<meta property="og:image" content="http://www.jokernew.top/images/Windows应用程序原理图.png">
+<meta property="og:image" content="http://www.jokernew.top/images/程序运行结果.png">
+<meta property="og:updated_time" content="2018-05-12T17:51:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Win32汇编之Windows下窗口程序">
+<meta name="twitter:description" content="最近在学Win32汇编，故写此以作学习笔记，待日后复习查看使用。">
+<meta name="twitter:image" content="http://www.jokernew.top/images/Windows应用程序原理图.png">
+  
+    <link rel="alternate" href="/atom.xml" title="JokerHome" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">JokerHome</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Journey of Discovery</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.jokernew.top"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Win32汇编之Windows下窗口程序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Win32汇编之Windows下窗口程序/" class="article-date">
+  <time datetime="2018-02-03T11:29:22.000Z" itemprop="datePublished">2018-02-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Win32汇编之Windows下窗口程序
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近在学Win32汇编，故写此以作学习笔记，待日后复习查看使用。<br><a id="more"></a></p>
+<p>这里明确几件事，Windows下的窗口应用程序都是基于消息机制的，操作系统与应用程序之间，应用程序和应用程序之间，大部分都是通过消息机制进行通信，交互的。</p>
+<h2>窗口程序的运行过程</h2><br><blockquote style="color:DimGray;text-align:left">（1）得到应用程序的句柄(GetModuleHandle)。</blockquote><br><blockquote style="color:DimGray;text-align:left">（2）注册窗口类(RegisterClassEx)。在注册之前，要先填写RegisterClassEx的参数WNDCLASSEX结构。</blockquote><br><blockquote style="color:DimGray;text-align:left">（3）建立窗口(CreateWindowEx)。</blockquote><br><blockquote style="color:DimGray;text-align:left">（4）显示窗口(ShowWindow)。</blockquote><br><blockquote style="color:DimGray;text-align:left">（5）刷新窗口客户区(UpdateWindow)</blockquote><br><blockquote style="color:DimGray;text-align:left">（6）进入无限的消息获取和处理的循环。首先获取消息(GetMessage),如果有消息到达，则将消息分派到回调函数处理(DispatchMessage),如果消息是<em>WM_QUIT</em>,则退出循环。</blockquote><br><h3>Windows应用程序运行原理图</h3><br><img src="/images/Windows应用程序原理图.png" alt="Windows应用程序原理图" width="526" height="366"><br><h2>API分析</h2><br><big>(1)取模块句柄GetModuleHandle,MSDN定义如下:</big><br><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HMODULE WINAPI GetModuleHandle(</span><br><span class="line">  _In_opt_ LPCTSTR lpModuleName   //其中lpModuleName为模块句柄名称</span><br><span class="line">);</span><br></pre></td></tr></table></figure><br><br><p>参数lpModuleName是一个加载的模块的名字，例如.dll或.exe。如果调用成功，将返回一个指向这个模块的句柄，否则返回NULL值。如果参数为空，则返回调用这个函数的文件名的句柄，即这个.exe文件。<q>returns a handle to the file used to create the calling process (.exe file).</q></p><br><big>(2)注册窗口类RegisterClassEx,MSDN定义如下:</big><br><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ATOM WINAPI RegisterClassEx(</span><br><span class="line">  _In_ const WNDCLASSEX *lpwcx</span><br><span class="line">);</span><br></pre></td></tr></table></figure><br><br><p><br>参数是一个指向WNDCLASSEX的结构体指针，必须在传参之前填充它。如果调用成功，则返回值是唯一标识注册类的atom类。这个返回的atom仅仅能被CreateWindow,CreateWindowEx,GetClassInfo,GetClassInfoEx,FindWindow,FindWindowEx,和UnregisterClass函数和IActiveIMMap::FilterClientWindows方法使用，如果失败，则返回值为0，可以用GetLastError函数获取错误信息。<br></p><br><h4>MSDN结构体WNDCLASSEX的定义:</h4><br><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在Win32中，所有类型都是32位，故参数名前类型在汇编中替换为DWORD</span></span><br><span class="line">typedef struct tagWNDCLASSEX &#123;</span><br><span class="line">  UINT      cbSize;        	<span class="comment">#这个结构体的大小，单位为字节</span></span><br><span class="line">  UINT      style;		<span class="comment">#类的风格，可以是任意的结合</span></span><br><span class="line">  WNDPROC   lpfnWndProc;	<span class="comment">#窗口过程的地址</span></span><br><span class="line">  int       cbClsExtra;		<span class="comment">#在窗口类结构之后分配的额外字节数。系统初始化字节为零。</span></span><br><span class="line">  int       cbWndExtra;		<span class="comment">#在窗口实例之后分配的额外字节数。系统初始化字节为零。</span></span><br><span class="line">  HINSTANCE hInstance;		<span class="comment">#所属的实例句柄，可以用GetModuleHandle获得</span></span><br><span class="line">  HICON     hIcon;		<span class="comment">#窗口图标</span></span><br><span class="line">  HCURSOR   hCursor;		<span class="comment">#窗口光标</span></span><br><span class="line">  HBRUSH    hbrBackground;	<span class="comment">#背景色</span></span><br><span class="line">  LPCTSTR   lpszMenuName;	<span class="comment">#窗口菜单</span></span><br><span class="line">  LPCTSTR   lpszClassName;	<span class="comment">#类名字符串的地址</span></span><br><span class="line">  HICON     hIconSm;		<span class="comment">#小图标</span></span><br><span class="line">&#125; WNDCLASSEX, *PWNDCLASSEX;</span><br></pre></td></tr></table></figure><br><br><p>hIcon: Windows已经预定义了一些图标，可以使用LoadIcon函数获得资源文件中定义的图标，没有参数时显示默认图标。<br></p><p>hCursor: 制定了鼠标在窗口中的光标形状，可以用LoadCursor获取它们的句柄，IDC_ARRW是Windows预定义的箭头光标，也可以在资源文件中定义光标。<br></p><p>IpszMenuName: 默认菜单，指向一个字符串，描述资源文件中菜单的名称。可以在资源文件中的数值定义和CreateWindowEx的参数中指定，如果两个地方都没有指定，那么建立的窗口就没有菜单。<br></p><p><a href="https://msdn.microsoft.com/EN-US/library/windows/desktop/ff729176(v=vs.85).aspx" target="_blank" rel="noopener">style</a>: 窗口风格，CS_HREDRAW和CS_VREDRAW表示窗口的宽度或高度该表时是否重画窗口。CS_DBLCLKS风格，Windows会把两次单击翻译成双击消息WM_LBUTTONDBLCLK。<br></p><p>hbrBackground: 窗户客户区的背景色，预定义了一些背景色，如BLACK_BRUSH和WHITE_BRUSH等。可以用GetStockObject得到它的句柄。这里也可以使用颜色值，分别对应窗口各部分的颜色，如COLOR_BACKGROUND，COLOR_HIGHLIGHT,COLOR_MENU和COLOR_WINDOW等，Windows规定使用颜色值加1;。<br></p><p>lpszClassName: 指定要建立的类命名，以便引用，为字符串指针。<br></p><br><big>(3）建立窗口,CreateWindowEx,MSDN定义如下:</big><br><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">HWND WINAPI CreateWindowEx(</span><br><span class="line">  _In_     DWORD     dwExStyle,     <span class="comment">#决定外形和行为</span></span><br><span class="line">  _In_opt_ LPCTSTR   lpClassName,   <span class="comment">#建立窗口使用的类名字符串，在上面为lpszClassName</span></span><br><span class="line">  _In_opt_ LPCTSTR   lpWindowName,  <span class="comment">#表示窗口名称的字符串</span></span><br><span class="line">  _In_     DWORD     dwStyle,   	<span class="comment">#决定外形和行为</span></span><br><span class="line">  _In_     int       x,   			<span class="comment">#</span></span><br><span class="line">  _In_     int       y,   			<span class="comment">#指定窗口左上角的位置，单位是像素。默认时可指定为CW_USEDEFAULT，Windows自动指定合适位置，建立子窗口时，位置以父窗口的左上角为基准，否则，以屏幕左上角为基准</span></span><br><span class="line">  _In_     int       nWidth,   		<span class="comment">#</span></span><br><span class="line">  _In_     int       nHeight,   	<span class="comment">#窗口的宽高，以像素为单位，默认为CW_USEDEFAULT</span></span><br><span class="line">  _In_opt_ HWND      hWndParent,   	<span class="comment">#窗口所属的从属关系的父窗口，不会限制在父窗口范围内</span></span><br><span class="line">  _In_opt_ HMENU     hMenu,   		<span class="comment">#窗口上要出现的菜单的句柄，在注册窗口类的时候也定义了一个菜单，首先使用这里的参数</span></span><br><span class="line">  _In_opt_ HINSTANCE hInstance,   	<span class="comment">#执行了窗口所属的程序模块</span></span><br><span class="line">  _In_opt_ LPVOID    lpPar   		<span class="comment">#</span></span><br><span class="line">  );</span><br></pre></td></tr></table></figure><br><br><p><a href="https://msdn.microsoft.com/EN-US/library/windows/desktop/ff700543(v=vs.85).aspx" target="_blank" rel="noopener">dwExStyle</a>,Windos扩展风格。</p><br><p>建立子窗口时将hWndParent参数转换成父窗口名，将hMenu参数指定为子窗口的ID，如1，以便区别。建立子窗口时最好在窗口过程中建立。</p><br><br><big>（4）显示窗口ShowWindow，MSDN定义:</big><br><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BOOL WINAPI ShowWindow(</span><br><span class="line">  _In_ HWND hWnd,       <span class="comment">#窗口句柄</span></span><br><span class="line">  _In_ int  nCmdShow    <span class="comment">#窗口显示方式</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure><br><br><big>（5）刷新窗口客户区UpdateWindow,MSDN定义如下:</big><br><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void UpdateWindow( );  <span class="comment">#直接发送WM_PAINT消息</span></span><br></pre></td></tr></table></figure><br><br><big>（6）消息循环</big><br><br>消息循环中要用到一个MSG结构，用来消息传递，定义如下:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef struct tagMSG &#123;</span><br><span class="line">  HWND   hwnd;	<span class="comment">#窗口程序接收消息的窗口的句柄。</span></span><br><span class="line">  UINT   message;	<span class="comment">#消息标识符。应用程序只能使用低单词;高字是由系统保留的。</span></span><br><span class="line">  WPARAM wParam;	<span class="comment">#关于消息的附加信息。确切的含义取决于消息成员的值。</span></span><br><span class="line">  LPARAM lParam;	<span class="comment">#关于消息的附加信息。确切的含义取决于消息成员的值。</span></span><br><span class="line">  DWORD  time;	<span class="comment">#消息放入消息队列的时间。</span></span><br><span class="line">  POINT  pt;	<span class="comment">#一个POINT数据结构，表示消息放入消息队列时的鼠标坐标。</span></span><br><span class="line">&#125; MSG, *PMSG, *LPMSG;</span><br></pre></td></tr></table></figure><br><br>取消息GetMessage,定义如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">BOOL WINAPI GetMessage(</span><br><span class="line">  _Out_    LPMSG lpMsg,	<span class="comment">#指向MSG结构，返回取到的消息</span></span><br><span class="line">  _In_opt_ HWND  hWnd,	<span class="comment">#指定要获取哪个窗口的消息，NULL为本程序所属窗口</span></span><br><span class="line">  _In_     UINT  wMsgFilterMin,	<span class="comment">#为0表示获取所有编号消息，</span></span><br><span class="line">  _In_     UINT  wMsgFilterMax	<span class="comment">#可以和上一参数连用获取鼠标，键盘输入消息，WM_KEYFIRST,WM_MOUSEFIRST,这里使用WM_INPUT和wMsgFilterMin</span></span><br><span class="line">  );</span><br></pre></td></tr></table></figure><br><br>如果获取的消息是WM_QUIT，则eax中的返回值是0，否则eax返回非0值，配合.break .if eax == 0 来检查返回值退出消息循环。<br><br>键盘消息转换函数TranslateMessage，将MSG传给Windows进行键盘消息转换，遇到键盘消息则将扫描码转换成ASCII码并在消息队列中插入WM_CHAR或WM_SYSCHAR消息，参数是转换好的ASCII码。TranslateMessage定义如下：<br><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BOOL WINAPI TranslateMessage(</span><br><span class="line">  _In_ const MSG *lpMsg <span class="comment">#指向MSG的指针</span></span><br><span class="line">  );</span><br></pre></td></tr></table></figure><br><br>DispatchMessage将消息发送到窗口对应窗口过程去处理，窗口过程返回后DispatchMessage函数才返回。DispatchMessage定义如下：<br><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LRESULT WINAPI DispatchMessage(</span><br><span class="line">  _In_ const MSG *lpmsg</span><br><span class="line">  );</span><br></pre></td></tr></table></figure><br><br><h3>窗口过程</h3><br>窗口过程是给Windows回调用的，必须遵循规定的格式，对窗口过程的子程序名并没有规定，对Windows来说，窗口过程的地址才是唯一需要的。例子代码中的窗口子程序过程参数格式为：<br><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">WindowProc 	proc 	hwnd,uMsg,wParam,lParam <span class="comment">#和MSG中前四个字段一样</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#窗口过程一般有如下结构</span></span><br><span class="line">WindowProc	proc	uses ebx edi esi hWnd,uMsg,wParam,lParam</span><br><span class="line">			mov		eax,uMsg</span><br><span class="line">			.<span class="keyword">if</span>		eax == WM_XXX</span><br><span class="line">					&lt;处理WM_XXX消息&gt;</span><br><span class="line">			.elseif	eax == WM_YYY</span><br><span class="line">					&lt;处理WM_YYY消息&gt;</span><br><span class="line">			.elseif	eax == WM_CLOSE</span><br><span class="line">					invoke	DestroyWindow,hWinMain</span><br><span class="line">					invoke	PostQuitMessage,NULL</span><br><span class="line">			.<span class="keyword">else</span></span><br><span class="line">					invoke	DefWindowProc,hWnd,uMsg,wParam,lParam</span><br><span class="line">					ret</span><br><span class="line">			.endif</span><br><span class="line">			xor		eax,eax</span><br><span class="line">			ret</span><br><span class="line"></span><br><span class="line">WindowProc	endp</span><br></pre></td></tr></table></figure><br><br>需要注意窗口过程中要注意保存ebx,edi,esi和ebp寄存器,高级语言不用担心，Windows内部将这四个寄存器当指针使用。proc后的uses伪操作在子程序进入和退出时自动安插push和pop寄存器指令来保护寄存器值。<br><br><h4>至此，一个完整的Windows窗口就建成了。完整代码如下：</h4><br><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line">	.386</span><br><span class="line">	.model flat,stdcall</span><br><span class="line">	option casemap:none</span><br><span class="line">;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">;Include文件定义</span><br><span class="line">;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">		include		windows.inc</span><br><span class="line">		include		gdi32.inc</span><br><span class="line">		includelib	gdi32.lib</span><br><span class="line">		include		user32.inc</span><br><span class="line">		includelib	user32.lib</span><br><span class="line">		include		kernel32.inc</span><br><span class="line">		includelib	kernel32.lib</span><br><span class="line">;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">;数据段</span><br><span class="line">;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">.data?</span><br><span class="line">		hInstance	dd		?</span><br><span class="line">		hWinMain	dd		?</span><br><span class="line">.const</span><br><span class="line">		szClassName		db	<span class="string">'MyClass'</span>,0</span><br><span class="line">		szCaptionMain	db	<span class="string">'My first Window !'</span>,0</span><br><span class="line">		szButton		db	<span class="string">'button'</span>,0</span><br><span class="line">		szButtonText	db	<span class="string">'&amp;OK'</span>,0</span><br><span class="line">		szText			db	<span class="string">'Win32 Assembly,Simple	and powerful !'</span>,0</span><br><span class="line">;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">;代码段</span><br><span class="line">;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">.code</span><br><span class="line">;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">;窗口过程</span><br><span class="line">;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">_ProcWinMain	proc	uses ebx edi esi,hWnd,uMsg,wParam,lParam</span><br><span class="line">		<span class="built_in">local</span>	@stPs:PAINTSTRUCT</span><br><span class="line">		<span class="built_in">local</span>	@stRect:RECT</span><br><span class="line">		<span class="built_in">local</span>	@hDc</span><br><span class="line">		mov		eax,uMsg</span><br><span class="line">;***************************************************************************</span><br><span class="line">.<span class="keyword">if</span>	eax == WM_PAINT</span><br><span class="line">		invoke BeginPaint,hWnd,addr @stPs</span><br><span class="line">		mov @hDc,eax</span><br><span class="line">		invoke	CreateWindowEx,NULL,\</span><br><span class="line">				offset szButton,offset szButtonText,\</span><br><span class="line">				WS_CHILD or WS_VISIBLE,\</span><br><span class="line">				10,10,65,22,\</span><br><span class="line">				hWnd,1,hInstance,NULL                  </span><br><span class="line">		invoke GetClientRect,hWnd,addr @stRect</span><br><span class="line">		invoke DrawText,@hDc,addr szText,-1,\																													 addr @stRect,\																																	   DT_SINGLELINE or DT_CENTER or DT_VCENTER</span><br><span class="line">																																						  invoke EndPaint,hWnd,addr @stPs</span><br><span class="line">;***************************************************************************</span><br><span class="line">.elseif eax == WM_CLOSE	</span><br><span class="line">		invoke DestroyWindow,hWinMain</span><br><span class="line">		invoke PostQuitMessage,NULL</span><br><span class="line">;***************************************************************************</span><br><span class="line">.<span class="keyword">else</span></span><br><span class="line">		invoke	DefWindowProc,hWnd,uMsg,wParam,lParam</span><br><span class="line">		ret</span><br><span class="line">.endif</span><br><span class="line">;***************************************************************************</span><br><span class="line">		xor		eax,eax</span><br><span class="line">		ret</span><br><span class="line">_ProcWinMain	endp</span><br><span class="line">;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">_WinMain	proc</span><br><span class="line">		<span class="built_in">local</span>	@stWndClass:WNDCLASSEX</span><br><span class="line">		<span class="built_in">local</span>	@stMsg:MSG</span><br><span class="line">		invoke	GetModuleHandle,NULL</span><br><span class="line">		mov		hInstance,eax</span><br><span class="line">		invoke	RtlZeroMemory,addr	@stWndClass,sizeof @stWndClass</span><br><span class="line">;***************************************************************************</span><br><span class="line">;c注册窗口类</span><br><span class="line">;***************************************************************************</span><br><span class="line">		invoke	LoadCursor,0,IDC_ARROW</span><br><span class="line">		mov		@stWndClass.hCursor,eax</span><br><span class="line">		push	hInstance</span><br><span class="line">		pop		@stWndClass.hInstance</span><br><span class="line">		mov		@stWndClass.cbSize,sizeof WNDCLASSEX</span><br><span class="line">		mov		@stWndClass.style,CS_HREDRAW or CS_VREDRAW</span><br><span class="line">		mov		@stWndClass.lpfnWndProc,offset _ProcWinMain</span><br><span class="line">		mov		@stWndClass.hbrBackground,COLOR_WINDOW + 1</span><br><span class="line">		mov		@stWndClass.lpszClassName,offset szClassName</span><br><span class="line">		invoke	RegisterClassEx,addr @stWndClass</span><br><span class="line">;***************************************************************************</span><br><span class="line">;建立并显示窗口</span><br><span class="line">;***************************************************************************</span><br><span class="line">		invoke	CreateWindowEx,WS_EX_CLIENTEDGE,\</span><br><span class="line">				offset szClassName,offset szCaptionMain,\</span><br><span class="line">				WS_OVERLAPPEDWINDOW,\</span><br><span class="line">				100,100,600,400,\</span><br><span class="line">				NULL,NULL,hInstance,NULL</span><br><span class="line">		mov		hWinMain,eax</span><br><span class="line">		</span><br><span class="line">		invoke	ShowWindow,hWinMain,SW_SHOWNORMAL</span><br><span class="line">		invoke	UpdateWindow,hWinMain</span><br><span class="line">;***************************************************************************</span><br><span class="line">;消息循环</span><br><span class="line">;***************************************************************************</span><br><span class="line">.<span class="keyword">while</span>	TRUE</span><br><span class="line">		invoke	GetMessage,addr @stMsg,NULL,0,0</span><br><span class="line">		.<span class="built_in">break</span>	.<span class="keyword">if</span>	eax == 0</span><br><span class="line">		invoke	TranslateMessage,addr	@stMsg</span><br><span class="line">		invoke	DispatchMessage,addr	@stMsg</span><br><span class="line">.endw</span><br><span class="line">		ret</span><br><span class="line">		</span><br><span class="line">_WinMain	endp</span><br><span class="line">;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">start:</span><br><span class="line">		call	_WinMain</span><br><span class="line">		invoke	ExitProcess,NULL</span><br><span class="line">;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><br><span class="line">end		start</span><br></pre></td></tr></table></figure><br><br>程序运行结果:<br><img src="/images/程序运行结果.png" alt="程序运行结果"><br><h2>参考资料：</h2>
+
+<p>[1]Windows下32位汇编语言程序设计典藏版<br>[2]MSDN</p>
+<h2>联系方式:</h2>
+
+<p>邮箱:<a href="mailto:daemon.love@foxmail.com" target="_blank" rel="noopener">daemon.love@foxmail.com</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.jokernew.top/Win32汇编之Windows下窗口程序/" data-id="cjimu6x2v0005agd5vc1r4xbw" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows，汇编，Win32/">Windows，汇编，Win32</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/孤独之旅/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          孤独之旅
+        
+      </div>
+    </a>
+  
+  
+    <a href="/使用GitHub-Hexo搭建静态网站/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">使用GitHub+Hexo搭建静态网站</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim-Linux-代码-文本编辑器-正则表达式/">Vim, Linux, 代码/文本编辑器, 正则表达式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim，Linux，代码-文本编辑器/">Vim，Linux，代码/文本编辑器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows，汇编，Win32/">Windows，汇编，Win32</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/心灵，孤独，治愈，随感/">心灵，孤独，治愈，随感</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Vim-Linux-代码-文本编辑器-正则表达式/" style="font-size: 10px;">Vim, Linux, 代码/文本编辑器, 正则表达式</a> <a href="/tags/Vim，Linux，代码-文本编辑器/" style="font-size: 20px;">Vim，Linux，代码/文本编辑器</a> <a href="/tags/Windows，汇编，Win32/" style="font-size: 10px;">Windows，汇编，Win32</a> <a href="/tags/心灵，孤独，治愈，随感/" style="font-size: 10px;">心灵，孤独，治愈，随感</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/Vim使用心得三/">Vim使用心得三</a>
+          </li>
+        
+          <li>
+            <a href="/Vim使用心得二之常用命令/">Vim使用心得二之常用命令</a>
+          </li>
+        
+          <li>
+            <a href="/Vim使用心得一/">Vim使用心得一</a>
+          </li>
+        
+          <li>
+            <a href="/孤独之旅/">孤独之旅</a>
+          </li>
+        
+          <li>
+            <a href="/Win32汇编之Windows下窗口程序/">Win32汇编之Windows下窗口程序</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 DW*Joker<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+		<div class="powered-by">
+		<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+		  本站访客数:<span id="busuanzi_value_site_uv"></span>
+		</span>
+		</div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

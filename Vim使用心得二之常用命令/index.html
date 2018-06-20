@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Vim使用心得二之常用命令 | JokerHome</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="继上篇安装配额与简单使用后，可能并没有感觉到Vim的神奇之处，甚至会觉得还没有记事本好用，所以接下来就是体验Vim的神奇之处，领略它的魅力！本篇包括增加，删除，复制粘贴，查找与定位。">
+<meta name="keywords" content="Vim，Linux，代码&#x2F;文本编辑器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vim使用心得二之常用命令">
+<meta property="og:url" content="http://www.jokernew.top/Vim使用心得二之常用命令/index.html">
+<meta property="og:site_name" content="JokerHome">
+<meta property="og:description" content="继上篇安装配额与简单使用后，可能并没有感觉到Vim的神奇之处，甚至会觉得还没有记事本好用，所以接下来就是体验Vim的神奇之处，领略它的魅力！本篇包括增加，删除，复制粘贴，查找与定位。">
+<meta property="og:locale" content="English&Chinese">
+<meta property="og:image" content="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_02.png">
+<meta property="og:updated_time" content="2018-05-12T17:51:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vim使用心得二之常用命令">
+<meta name="twitter:description" content="继上篇安装配额与简单使用后，可能并没有感觉到Vim的神奇之处，甚至会觉得还没有记事本好用，所以接下来就是体验Vim的神奇之处，领略它的魅力！本篇包括增加，删除，复制粘贴，查找与定位。">
+<meta name="twitter:image" content="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_02.png">
+  
+    <link rel="alternate" href="/atom.xml" title="JokerHome" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">JokerHome</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Journey of Discovery</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.jokernew.top"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Vim使用心得二之常用命令" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Vim使用心得二之常用命令/" class="article-date">
+  <time datetime="2018-04-29T14:04:31.000Z" itemprop="datePublished">2018-04-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Vim使用心得二之常用命令
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>继上篇安装配额与简单使用后，可能并没有感觉到Vim的神奇之处，甚至会觉得还没有记事本好用，所以接下来就是体验Vim的神奇之处，领略它的魅力！<br>本篇包括增加，删除，复制粘贴，查找与定位。<br><a id="more"></a></p>
+<link rel="stylesheet" href="../css/MyBlog_Vim.css" type="text/css">
+
+<p></p><h3 id="h3-right">目录<br><a href="#增加">一、增加</a><br><a href="#删除">二、删除</a><br><a href="#复制与粘贴">三、复制与粘贴</a><br><a href="#查找与定位">四、查找与定位</a><p></p>
+<p><div id="增加"><h2>一、增加</h2></div></p>
+<p>所谓的增加即是插入操作，在Vim中对应的是从命令模式切换到编辑模式，可以使用[A],[a],[O],[o],[I],[i]。<br><br>    <code><br>        以下操作均为命令模式直接键入字符:<br><br>        [A]:在行尾插入，光标移动到行尾<br><br>        [a]:在当前字符后插入，光标移动到当前字符后<br><br>        [I]:在行首插入，光标移动到当前行行首<br><br>        [i]:在当前字符前插入，光标移动到当前字符前<br><br>        [O]:插入上一行，在当前行前一行插入一空行，光标移至插入的空行首<br><br>        [o]:插入下一行，在当前行后一行插入一空行，光标移至插入的空行首<br><br>    </code></p><br><div id="删除"><h2>二、删除</h2></div><br><p>    <code>以下操作均为命令模式直接键入命令:<br><br>        [x]:删除光标所在字符<br><br>        [X]:删除光标前一字符<br><br>        [dd]:删除光标所在行内容<br><br>        [D]:删除从光标到当前行尾的内容<br><br>        [ndd]:删除当前行及其后n-1行内容<br><br>    </code><br>        <font>在末行模式下，可以使用[:n,m d]删除从n到m行的内容，当m为”$”字符时，删除到文末。</font></p><br><div id="复制与粘贴"><h2>三、复制与粘贴</h2></div><br><p>        <strong>常用复制:</strong><br><br>        <code><br>            [yy]:复制当前行<br><br>            [nyy]:复制当前行及其下n行<br><br>        </code><br>        <font>在末行模式下，可以使用[:n,m y]复制从n到m行的内容，当m为”$”字符时，复制到文末。</font><br><br>        <strong id="maroon">剪切:</strong><br><br>        <font>使用删除操作时自动将删除内容存入缓存区,可以使用复制进行还原删除内容。</font><br>        <strong>常用粘贴:</strong><br><br>        <code><br>            [p]:将缓存区内容粘贴到光标下一行<br><br>            [P]:将缓存区内容粘贴到光标上一行<br><br>        </code><br>        <font id="mediumturquoise-right">Vim有9种类型的寄存器，寄存器的主要功能就是负责缓存复制粘贴移动等操作过程中的文本内容。在末行模式使用<code>[:reg]</code>可以查看各个寄存器中的主要内容。<br><br>        在这里目前主要介绍的寄存器是系统缓存区[“+],和windows里的剪贴板功能是一样的，可以将Vim外的东西和Vim内互相存取。<br><br>        使用方法:<br><br>        复制:从命令模式输入[“+yy | “+dd]，则复制/剪切光标所在行到系统剪贴板，或在末行模式输入[:n,m y + |:n,m d +]，从第n行到第m行的内容复制/剪切到系统剪贴板。<br><br>        粘贴：从命令模式输入[“+p],则从系统剪贴板粘贴到光标后。<br>        </font><br>        <a href="https://my.oschina.net/shelllife/blog/144357" target="_blank" rel="noopener">关于寄存器与剪贴板的更多内容请点击</a><br>        <a href="https://www.cnblogs.com/tocy/p/vi-text-select-copy-cut-command.html" target="_blank" rel="noopener">关于复制剪贴的更多内容请点击</a><br>    </p><br><div id="查找与定位"><h2>四、查找与定位</h2></div><br><p>    <strong>查找:</strong><br><br>    在Vim里可以在命令模式下使用[/内容]或[?内容]实现向下/向上查找内容，查找到后可以按回车后使用字符[n]进行下一个查看。关于正则表达式实现查找替换等在下一篇说明。<br>    定位:<br><br>        <font id="orangered">在Vim中”^”符号代表开头，”$”符号代表行尾。</font><br><br>        1.在命令模式时，可以使用[^]跳到光标所在行文本开头，[$]跳到光标所在行文本行末;在末行模式时,可以使用[:$]跳到本文文末，[:n]跳转到第n行，n为0时则表示跳转到本文开头。<br><br>        2.在命令模式时，按[n(上|下|左|右)],即n+方向键可以实现从光标所在字符往左/右跳n个字符，往上/下跳n行。<br>        <a href="https://blog.csdn.net/xiaorenwuzyh/article/details/42833765" target="_blank" rel="noopener">更多关于光标的跳转参考请点击</a><br></p>
+
+<p></p><h2>联系方式:</h2><br><a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=5oKHg4uJiMiKiZCDpoCJnouHj4rIhYmL" style="text-decoration:none;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_02.png"></a><p></p>
+</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.jokernew.top/Vim使用心得二之常用命令/" data-id="cjimu6x2q0004agd5o16incev" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vim，Linux，代码-文本编辑器/">Vim，Linux，代码/文本编辑器</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/Vim使用心得三/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Vim使用心得三
+        
+      </div>
+    </a>
+  
+  
+    <a href="/Vim使用心得一/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Vim使用心得一</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim-Linux-代码-文本编辑器-正则表达式/">Vim, Linux, 代码/文本编辑器, 正则表达式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim，Linux，代码-文本编辑器/">Vim，Linux，代码/文本编辑器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows，汇编，Win32/">Windows，汇编，Win32</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/心灵，孤独，治愈，随感/">心灵，孤独，治愈，随感</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Vim-Linux-代码-文本编辑器-正则表达式/" style="font-size: 10px;">Vim, Linux, 代码/文本编辑器, 正则表达式</a> <a href="/tags/Vim，Linux，代码-文本编辑器/" style="font-size: 20px;">Vim，Linux，代码/文本编辑器</a> <a href="/tags/Windows，汇编，Win32/" style="font-size: 10px;">Windows，汇编，Win32</a> <a href="/tags/心灵，孤独，治愈，随感/" style="font-size: 10px;">心灵，孤独，治愈，随感</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/Vim使用心得三/">Vim使用心得三</a>
+          </li>
+        
+          <li>
+            <a href="/Vim使用心得二之常用命令/">Vim使用心得二之常用命令</a>
+          </li>
+        
+          <li>
+            <a href="/Vim使用心得一/">Vim使用心得一</a>
+          </li>
+        
+          <li>
+            <a href="/孤独之旅/">孤独之旅</a>
+          </li>
+        
+          <li>
+            <a href="/Win32汇编之Windows下窗口程序/">Win32汇编之Windows下窗口程序</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 DW*Joker<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+		<div class="powered-by">
+		<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+		  本站访客数:<span id="busuanzi_value_site_uv"></span>
+		</span>
+		</div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
